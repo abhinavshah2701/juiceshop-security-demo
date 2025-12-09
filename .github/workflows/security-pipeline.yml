@@ -1,0 +1,31 @@
+name: Security Pipeline
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+
+jobs:
+
+  secrets:
+    name: Gitleaks - Secrets Scan
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Run Gitleaks
+        uses: zricethezav/gitleaks-action@v1
+        with:
+          args: detect --source . --verbose
+
+  dependency_info:
+    name: Dependabot Information
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Dependabot runs automatically via GitHub Security."
+
+  sonar_note:
+    name: SonarCloud Note
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "SAST is handled by SonarCloud AutoScan."
